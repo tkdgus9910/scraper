@@ -20,19 +20,17 @@ if __name__ == '__main__':
     import pandas as pd
     from googlepatentscraper.document import Document
 
-    directory = 'D:/SNU/TILAB - 문서/DB/Patent/Wisdomain/VR_AR/'
+    directory = 'D:/SNU/TILAB - 문서/DB/Patent/Wisdomain/ev_hev_battery/'
     
-    data = pd.read_csv(directory + 'CSV2206215857.csv',  skiprows=4)
+    data = pd.read_csv(directory + 'CSV2208174828.csv',  skiprows=4)
     
-    #%%
-    
-    
+    #%%        
     
     data['description'] = ''
     # text = Document(row['번호']).data['description_alt']
     except_list = []
     
-    for idx, row in data[0:10].iterrows() :
+    for idx, row in data.iterrows() :
 
         try :
             patent = Document(row['번호']).data
@@ -43,7 +41,7 @@ if __name__ == '__main__':
             
             
     #%%            
-    data.to_csv(directory + 'CSV2206215857_desc.csv', index = 0)
+    data.to_csv(directory + 'CSV2208174828_desc.csv', index = 0)
     
     
     #%%

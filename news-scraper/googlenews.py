@@ -10,11 +10,12 @@ Created on Tue Mar  8 15:14:27 2022
 #%% 개별 수집
 
 from GoogleNews import GoogleNews
+
 googlenews = GoogleNews(lang='en', region='US')
 googlenews.set_encode('utf-8')
 
-googlenews.set_time_range(start = '01/01/20', end = '12/31/2021')
-q = '6G communication future'
+googlenews.set_time_range(start = '01/01/2022', end = '12/31/2022')
+q = 'electric vehicle battery'
 # q = '6G communication scenario'
 # q = '6G communication use-case'
 
@@ -30,7 +31,10 @@ import pandas as pd
 googlenews = GoogleNews(lang='en', region='US')
 googlenews.set_encode('utf-8')
 
-q_list = ['6G communication future', '6G communication scenario', '6G communication use-case']
+q_list = ['6G technology', 
+          '6G communication scenario', 
+          '6G communication use-case']
+
 googlenews.set_time_range(start = '01/01/2019', end = '12/31/2019')
 
 result_df = pd.DataFrame()

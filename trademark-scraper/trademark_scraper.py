@@ -139,6 +139,8 @@ for BRN in BRN_list :
 
 for k,v in BRN2CN_dict.items() :
     
+    
+    
     idx = db.loc[db['사업자등록번호'] == k,:].index[0]
     db['법인번호'][idx] = v
 
