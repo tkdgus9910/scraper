@@ -8,7 +8,7 @@ directory = 'D:/github/IPR-scraper/uspto/' #수정
 filename = 'gp-search-20211117-030702.csv' #수정
 data = pd.read_csv(directory + filename,    skiprows=1)
 #%%
-patent = Document('US10003811').data
+patent = Document('EP04258450A2').data
 
 #%%
 

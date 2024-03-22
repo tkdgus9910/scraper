@@ -164,7 +164,8 @@ for idx, row in result_df.iterrows() :
     
     # try : result_df['주요연구분야'][idx] = para_dict['주요 연구분야']
     # except : pass
-    
+
+
 #%%
 
 
@@ -196,5 +197,8 @@ result_df['경력_재직기간(시작, 끝)'] = np.nan
 
 
 #%%
-# match = match.split(' ')[1]
+
+directory = 'D:/OneDrive - SNU'
+result_df.to_excel(directory + '/snu_result.xlsx')
+
 

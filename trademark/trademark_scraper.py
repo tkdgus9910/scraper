@@ -19,6 +19,7 @@ db = db_dict['class']
 
 db['특허고객번호'] = ''
 db['법인번호'] = ''
+
 # db['사업자등록번호'] = ''
 
 for idx, row in db.iterrows() : 

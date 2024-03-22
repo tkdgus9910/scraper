@@ -20,7 +20,8 @@ q = 'electric vehicle battery'
 # q = '6G communication use-case'
 
 googlenews.search(q)
-# googlenews.get_news(q)
+#%%
+googlenews.get_news(q)
 
 
 #%% 연별 수집
@@ -50,6 +51,7 @@ for q in q_list :
 
 result_df = result_df.drop_duplicates(['desc']).reset_index(drop = 1)
 
+#%%
 directory = 'G:/공유 드라이브/TILAB/프로젝트/2022/ETRI/2차보고서[20220629]/기사 데이터/'
 result_df.to_csv(directory + '6G_scenario_2019.csv')
 
