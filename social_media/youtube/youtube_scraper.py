@@ -3,6 +3,7 @@ if __name__ == '__main__':
 
     # pip install youtube-search-python
     # pip install --upgrade google-api-python-client
+    # pip install youtube_transcript_api
     from youtubesearchpython import VideosSearch
     from youtube_transcript_api import YouTubeTranscriptApi
     from bs4 import BeautifulSoup
@@ -15,17 +16,15 @@ if __name__ == '__main__':
     from apiclient.discovery import build
     import requests
 
-
-#%%
-
+    #%% test
     from youtube_search import YoutubeSearch
     
     results = YoutubeSearch('samsung galaxy tab s', max_results=10,
                             ).to_dict()
     
-    #%% 1. search
-    
-    search_query_ = ['samsung galaxy tab s',
+    #%% 1. search url
+    #'samsung galaxy tab s',
+    search_query_ = [
                      'samsung galaxy tab a',
                      'samsung galaxy tab e',
                      'apple ipad mini',
@@ -60,20 +59,23 @@ if __name__ == '__main__':
             Title = video['title']
             ViewCount = video['viewCount']['text']
             
-            output = output.append({'id' : Id,
+            data= {'id' : Id,
                            'duration' : Duration,
                            'publishedTime' : PublishedTime,
                            'title' : Title,
-                           'viewCount' : ViewCount},ignore_index=True)
+                           'viewCount' : ViewCount}
+          
+            data = pd.DataFrame.from_records([data])
+                                 
+            output = pd.concat([output,data])
             
-            #%%
          
-         # 3. save
+            # 3. save
         
-        directory = 'G:/내 드라이브/db/'
+            directory = 'D:/data/BRM/'
         
-        output.to_csv(directory + query  + '.csv' , index= False)
-    #%% 4. load & and subtitle extract
+            output.to_csv(directory + query  + '.csv' , index= False)
+    #%% 2. load & and subtitle extract
     
     api_key = "AIzaSyCUPU96nC4Oqzsg78O9PcKvVK3pvdVnieg" # 변경
     youtube = build('youtube','v3', developerKey= api_key)
