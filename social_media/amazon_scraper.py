@@ -172,5 +172,5 @@ for j in range(len(link)):
     review_data=pd.DataFrame.from_dict(reviews)
     # pd.set_option('max_colwidth',800)
     
-    directory = 
-    review_data.to_csv('Scraping reviews.csv')
+    directory = 'D:/data/BRM/'
+    review_data.to_csv(directory + 'Scraping reviews.csv')

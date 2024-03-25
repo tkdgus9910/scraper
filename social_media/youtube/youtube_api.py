@@ -10,8 +10,10 @@ if __name__ == '__main__':
     from googleapiclient.discovery import build
     from googleapiclient.errors import HttpError
     from oauth2client.tools import argparser
+    import os
     
-    developer_key = "AIzaSyDawLbjbRP3Ac4vVJGbxKAIs0bnitdJKME" 
+    
+    developer_key = os.environ.get('GOOGLE_API_KEY')
     
     def build_youtube_search(developer_key):
       DEVELOPER_KEY = developer_key
@@ -123,7 +125,7 @@ if __name__ == '__main__':
     from youtube_transcript_api import YouTubeTranscriptApi
     
     #%%
-    developer_key = "AIzaSyDawLbjbRP3Ac4vVJGbxKAIs0bnitdJKME" 
+    developer_key = os.environ.get('GOOGLE_API_KEY')
     youtube = build('youtube','v3', developerKey= developer_key)
     
     def scrapingTranscript(df, col) : 
