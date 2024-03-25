@@ -11,7 +11,6 @@ import praw # reddit library for scraping/crawler
 reddit = praw.Reddit(client_id= 'QjnGy8LbLQDk_Q',
                      client_secret=os.environ.get('CLIENT_SECRET'),
                      password = 'asd35789',
-                     
                       user_agent='fakebot'
                      )
 

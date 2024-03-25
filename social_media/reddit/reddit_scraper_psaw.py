@@ -10,14 +10,20 @@ import praw # reddit library for scraping/crawler
 from psaw import PushshiftAPI
 
 
-r = praw.Reddit(client_id= 'QjnGy8LbLQDk_Q',
+r = praw.Reddit(    client_id= 'xYLb6kr4p4NCbQ45yRi2bw',
                      client_secret=os.environ.get('CLIENT_SECRET'),
+                     username = 'tkdgus9910',
                      password = 'asd35789',
                      
-                      user_agent='fakebot'
+                     user_agent='scrapingbot'
                      )
 
+#%%
 
 api = PushshiftAPI(r)
 
 #%%
+
+from psaw import PushshiftAPI
+
+api = PushshiftAPI()

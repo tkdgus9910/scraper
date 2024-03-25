@@ -23,8 +23,8 @@ if __name__ == '__main__':
                             ).to_dict()
     
     #%% 1. search url
-    #'samsung galaxy tab s',
-    search_query_ = [
+    
+    search_query_ = ['samsung galaxy tab s',
                      'samsung galaxy tab a',
                      'samsung galaxy tab e',
                      'apple ipad mini',
@@ -34,7 +34,9 @@ if __name__ == '__main__':
     for query in search_query_ :
     
         results = []
-        search = VideosSearch(query, limit = 20, language = 'en',
+        search = VideosSearch(query, 
+                              limit = 20,
+                              language = 'en',
                               region = 'US')
         i = 0
         
@@ -76,10 +78,11 @@ if __name__ == '__main__':
         
             output.to_csv(directory + query  + '.csv' , index= False)
     #%% 2. load & and subtitle extract
-    
-    api_key = "AIzaSyCUPU96nC4Oqzsg78O9PcKvVK3pvdVnieg" # 변경
+
+    api_key = os.environ.get('GOOGLE_API_KEY')
+
     youtube = build('youtube','v3', developerKey= api_key)
-    
+
     def scrapingTranscript(df, col) : 
         
     # =============================================================================
