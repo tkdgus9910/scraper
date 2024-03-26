@@ -72,7 +72,7 @@ for i in soup.findAll("span",{'class':'a-size-medium a-color-base a-text-normal'
  
 data_asin=[]
 # response=getAmazonSearch('nike+shoes+men')
-response=getAmazonSearch('samsung+galaxy+tab',3)
+response=getAmazonSearch('samsung+galaxy+tablet',3)
 
 soup=BeautifulSoup(response.content)
 # for i in soup.findAll("div",{'data-component-type':"s-search-result"}):
@@ -109,14 +109,21 @@ data_asin = sum(data_asin, [])
 link=[]
 
 for i in range(len(data_asin)):
+    
     response=Searchasin(data_asin[i])
     soup=BeautifulSoup(response.content)
     for i in soup.findAll("a",{'data-hook':"see-all-reviews-link-foot"}):
         link.append(i['href'])
         
 #%%
+
 reviews = []
-for j in range(len(link)):
+
+#%%
+
+for j in range(208, len(link)):
+    print(j)
+    
     for k in range(10):
         response = Searchreviews(link[j] + '&pageNumber=' + str(k))
         soup = BeautifulSoup(response.content)
@@ -155,7 +162,8 @@ for j in range(len(link)):
                 
             # create Dictionary with all review data 
             data_dict = {
-                'product':product_names[j],
+                'product_names': link[j].split('/')[1],
+                'ASIN': data_asin[j],
                 'Name': name,
                 'Stars': stars,
                 'Title': title,

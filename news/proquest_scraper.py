@@ -1,6 +1,5 @@
 # selenium의 webdriver를 사용하기 위한 import
 from selenium import webdriver
-
 # selenium으로 키를 조작하기 위한 import
 from selenium.webdriver.common.keys import Keys
 
@@ -10,11 +9,15 @@ import pandas as pd
 
 from selenium.webdriver.common.by import By
 
-directory = 'D:/SNU/TILAB - 문서/수업/응다통/data/mini-project 기사/'
-data = pd.read_csv(directory+ '생성형AI.csv')
+directory = 'D:/data/BRM/proquest/'
+
+
+file_name = 'samsung_newspaper.csv'
+data = pd.read_csv(directory+ file_name)
 
 
 #%% 전처리 
+data = data.loc[data['Language'] == 'ENG', : ].reset_index(drop = 1)
 data['PubYear'] = data['PubDate'].apply(lambda x : int(x.split('-')[0]))
 from collections import Counter 
 
@@ -46,8 +49,8 @@ for comment in item:
 import numpy as np
 data['Contents'] = [[] for _ in range(len(data))]
 #%%
-driver = webdriver.Chrome() 
 
+driver = webdriver.Chrome() 
 
 for idx, url in enumerate(data['DocumentUrl']) : 
     
@@ -81,7 +84,7 @@ for idx, url in enumerate(data['DocumentUrl']) :
 #%%
 
 temp = data['Contents']
-#%%
+
 
 temp = temp.apply(lambda x : x[0] if x != [] else np.nan)
 
@@ -94,4 +97,4 @@ data_['Contents'] = data_['Contents'].apply(lambda x : x[0] if x != [] else np.n
 
 #%%
 
-data_.to_csv(directory + '생성형AI_완료.csv')
+data_.to_csv(directory + file_name + '_완료.csv')
