@@ -9,34 +9,53 @@ headers = {
     'accept-language': 'en-US,en;q=0.9,bn;q=0.8',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+    
 }
 
-
-#%%
-search_query="nike+shoes+men"
-base_url="https://www.amazon.com/s?k="
-url=base_url+search_query
-print(url)
-
-#%%
-search_response=requests.get(url,headers=headers)
-
-#%%
-search_response.status_code
 cookie={} # insert request cookies within{}
 
+headers = {
+    'authority': 'www.amazon.com',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'accept-language': 'en-US,en;q=0.9',
+    'sec-ch-ua': '"Chromium";v="104", "Google Chrome";v="104", ";Not A Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
+}
+
+cookies = {
+    # Fill in with the cookies required for your session
+    'session-id': '142-1234567-1234567', # Example cookie; replace with actual session cookie if needed
+    # Add more cookies as necessary
+}
+
+headers = {
+    'authority': 'www.amazon.com',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'accept-language': 'en-US,en;q=0.9',
+    'sec-ch-ua': '" Not;A Brand";v="99", "Microsoft Edge";v="103", "Chromium";v="103"',
+    'sec-ch-ua-mobile': '?0',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36 Edge/103.0.1264.49'
+}
+
+cookie = {} # insert request cookies within {}
+
+#%%
 def getAmazonSearch(search_query, page):
     page = str(page)
     url="https://www.amazon.com/s?k="+search_query+"&page="+page
     
     print(url)
     page=requests.get(url,headers=headers)
+    
     if page.status_code==200:
         return page
     else:
         return "Error"
     
-
 def Searchasin(asin):
     url="https://www.amazon.com/dp/"+asin
     print(url)
@@ -46,7 +65,6 @@ def Searchasin(asin):
     else:
         return "Error"
      
-
 def Searchreviews(review_link):
     url="https://www.amazon.com"+review_link
     print(url)
@@ -57,76 +75,85 @@ def Searchreviews(review_link):
     else:
         return "Error"
     
-  #%% GET_Product name
 
-product_names=[]
-# response=getAmazonSearch('nike+shoes+men')
-response=getAmazonSearch('samsung+galaxy+tab')
+#%% GET_ASIN test
+# query = 'samsung+galaxy+tab'
+query = 'apple+ipad'
+data_asin_=[]
+
+response=getAmazonSearch(query,3)
 soup=BeautifulSoup(response.content)
 
-for i in soup.findAll("span",{'class':'a-size-medium a-color-base a-text-normal'}): # the tag which is common for all the names of products
-    # 광고도 포함
-    product_names.append(i.text) 
-    
- #%% GET_ASIN
- 
-data_asin=[]
-# response=getAmazonSearch('nike+shoes+men')
-response=getAmazonSearch('samsung+galaxy+tablet',3)
-
-soup=BeautifulSoup(response.content)
 # for i in soup.findAll("div",{'data-component-type':"s-search-result"}):
 for i in soup.findAll("div",{'class':"sg-col-20-of-24 s-result-item s-asin sg-col-0-of-12 sg-col-16-of-20 sg-col s-widget-spacing-small sg-col-12-of-16"}):
     
     # 광고 제외
-    data_asin.append(i['data-asin'])  
-    
-#%% GET_ASIN iteration
+    data_asin_.append(i['data-asin'])  
+   
+#%% 1-1. GET_ASIN iteration - 작동 잘 안됌
 page = 1
 data_asin=[]
-
+query = 'apple+ipad'
+# query = 'samsung+galaxy+tab'
 while 1: 
-    
-    query = 'samsung+galaxy+tab'
-    response=getAmazonSearch('samsung+galaxy+tab', page)
+    response=getAmazonSearch(query, page)
     asin = []
     soup=BeautifulSoup(response.content)
-    # for i in soup.findAll("div",{'data-component-type':"s-search-result"}):
-    for i in soup.findAll("div",{'class':"sg-col-20-of-24 s-result-item s-asin sg-col-0-of-12 sg-col-16-of-20 sg-col s-widget-spacing-small sg-col-12-of-16"}):
-        
+    for i in soup.findAll("div",{'class':"sg-col-20-of-24 s-result-item s-asin sg-col-0-of-12 sg-col-16-of-20 sg-col s-widget-spacing-small sg-col-12-of-16"}):        
         # 광고 제외
         asin.append(i['data-asin'])  
-    
-    
     if len(asin) == 0 : break
     data_asin.append(asin)
     page +=1
     
 
 data_asin = sum(data_asin, [])
-   
-#%% scraping link
-link=[]
+#%% 1-2 asin data load
+directory = 'D:/OneDrive/data/BRM/amazon/'
+# data_asin = pd.read_csv(directory + 'asin_apple.csv', encoding = 'utf-8')
+data_asin = pd.read_csv(directory + 'asin_samsung.csv', encoding = 'ISO-8859-1')
+data_asin = list(data_asin['ASIN'])
 
-for i in range(len(data_asin)):
+#%% 2. scraping link and product names
+
+asin2productName_dict = {}
+asin2link_dict = {}
+
+for i in range(0, len(data_asin)):
     
     response=Searchasin(data_asin[i])
+    
     soup=BeautifulSoup(response.content)
-    for i in soup.findAll("a",{'data-hook':"see-all-reviews-link-foot"}):
-        link.append(i['href'])
+    for j in soup.findAll("a",{'data-hook':"see-all-reviews-link-foot"}):
         
+        if j['href'] in list(asin2link_dict.values()) : continue
+        else : 
+            asin2link_dict[data_asin[i]] = j['href']
+        
+    for j in soup.findAll("h1",{'id':"title"}):
+        asin2productName_dict[data_asin[i]] = j.text.strip()
+   
 #%%
+
+keys = list(asin2link_dict.keys())
+
+# for key in keys :
+#     if key not in 
+
+   
+
+#%% 3. scraping review
 
 reviews = []
 
-#%%
-
-for j in range(208, len(link)):
-    print(j)
+for asin in list(asin2link_dict.keys()) :
+    link = asin2link_dict[asin]
     
-    for k in range(10):
-        response = Searchreviews(link[j] + '&pageNumber=' + str(k))
+    for k in range(1, 6): # 최대 50페이지가 한계
+        temp = link + '&pageNumber=' + str(k) + '&sortBy=helpful'
+        response = Searchreviews(temp)
         soup = BeautifulSoup(response.content)
+        
         for i in soup.findAll("div", {'data-hook': "review"}):
             try:
                 name = i.select_one('[class="a-profile-name"]').text.strip()
@@ -162,8 +189,8 @@ for j in range(208, len(link)):
                 
             # create Dictionary with all review data 
             data_dict = {
-                'product_names': link[j].split('/')[1],
-                'ASIN': data_asin[j],
+                'product_names': asin2productName_dict[asin],
+                'ASIN': asin,
                 'Name': name,
                 'Stars': stars,
                 'Title': title,
@@ -175,10 +202,11 @@ for j in range(208, len(link)):
             # Add Dictionary in master empty List
             reviews.append(data_dict)
             
+        if len(soup.findAll("div", {'data-hook': "review"})) < 10 : break
     #%%
     
     review_data=pd.DataFrame.from_dict(reviews)
     # pd.set_option('max_colwidth',800)
-    
-    directory = 'D:/data/BRM/'
-    review_data.to_csv(directory + 'Scraping reviews.csv')
+    #%%
+    directory = 'D:/OneDrive/data/BRM/amazon/'
+    review_data.to_csv(directory + 'samsung.csv')
